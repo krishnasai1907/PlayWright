@@ -10,7 +10,7 @@ public class FirstPlayWright {
     public static void main(String[] args) {
 
         Playwright playwright=Playwright.create();
-        Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(false).setArgs(Collections.singletonList("--start-maximized")));
+        Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(false).setArgs(Collections.singletonList("--start-maximized")).setSlowMo(1000));
         BrowserContext context = browser.newContext(new Browser.NewContextOptions().setViewportSize(null));
         Page page=context.newPage();
             page.navigate("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
