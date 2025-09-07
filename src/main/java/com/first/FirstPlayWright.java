@@ -13,11 +13,19 @@ public class FirstPlayWright {
         Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(false).setArgs(Collections.singletonList("--start-maximized")));
         BrowserContext context = browser.newContext(new Browser.NewContextOptions().setViewportSize(null));
         Page page=context.newPage();
-        page.navigate("https://opensource-demo.orangehrmlive.com/");
-        System.out.println("opening");
-        page.locator("id=txtUsername").type("Admin");
-        page.locator("id=txtPassword").type("admin123");
-        page.locator("id=btnLogin").click();
+            page.navigate("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+            Locator userName=page.locator("//div[.='Username']/following-sibling::div/child::input");
+            highlightElement(userName,"red");
+            userName.fill("Admin");
+            Locator password=page.locator("//div[.='Password']/following-sibling::div/child::input");
+            highlightElement(password,"red");
+            password.fill("admin123");
+            Locator loginBtn=page.locator("button:has-text('Login')");
+            highlightElement(loginBtn,"blue");
+            loginBtn.click();
+            Locator dashboard=page.locator("//h6");
+            assertThat(dashboard).hasText("Dashboard");
+            System.out.println(page.title());
         page.pause();
         // Click b:has-text("Leave")
         page.locator("b:has-text(\"Leave\")").click();
@@ -39,5 +47,9 @@ public class FirstPlayWright {
         page.close();
         browser.close();
     }
-
+    public static void highlightElement( Locator locator, String color) {
+        locator.evaluate("element => {" +
+                "element.style.border = '3px solid " + color + "';" +
+                "}");
+    }
 }
